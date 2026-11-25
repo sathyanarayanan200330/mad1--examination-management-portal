@@ -1,0 +1,49 @@
+{% extends 'base.html' %}{% block title %}My Slots{% endblock %}{% block content %}<h1>Manage examination slots</h1>{%
+if slot_open %}<div class="card mb-4">
+    <div class="card-body">
+        <form method="post" class="row g-3">
+            <div class="col-md-4"><label class="form-label">Examination</label><select class="form-select"
+                    name="examination_id" required>{% for e in exams %}<option value="{{ e.id }}">{{ e.name }}</option>
+                    {% endfor %}</select></div>
+            <div class="col-md-2"><label class="form-label">Date</label><input class="form-control" type="date"
+                    name="exam_date" required></div>
+            <div class="col-md-2"><label class="form-label">Start time</label><input class="form-control" type="time"
+                    name="start_time" required></div>
+            <div class="col-md-2"><label class="form-label">End time</label><input class="form-control" type="time"
+                    name="end_time" required></div>
+            <div class="col-md-1"><label class="form-label">Capacity</label><input class="form-control" type="number"
+                    min="1" name="capacity" value="1" required></div>
+            <div class="col-md-1 align-self-end"><button class="btn btn-primary">Create</button></div>
+        </form>
+    </div>
+</div>{% else %}<div class="alert alert-warning">The administrator has not opened slot creation.</div>{% endif %}<div
+    class="card">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Examination</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Seats</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>{% for s in slots %}<tr>
+                    <td>{{ s.exam_name }}</td>
+                    <td>{{ s.exam_date }}</td>
+                    <td>{{ s.start_time }}–{{ s.end_time }}</td>
+                    <td>{{ s.booked }}/{{ s.capacity }}</td>
+                    <td>{{ s.status }}</td>
+                    <td>{% if not s.booked and slot_open %}<a class="btn btn-sm btn-outline-primary"
+                            href="{{ url_for('examiner.edit_slot',sid=s.id) }}">Edit</a>
+                        <form method="post" action="{{ url_for('examiner.delete_slot',sid=s.id) }}"><button
+                                class="btn btn-sm btn-outline-danger">Delete</button></form>{% endif %}
+                    </td>
+                </tr>{% else %}<tr>
+                    <td colspan="6">No slots.</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>{% endblock %}

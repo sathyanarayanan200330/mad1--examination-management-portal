@@ -1,0 +1,67 @@
+{% extends 'base.html' %}{% block title %}Student Dashboard{% endblock %}{% block content %}<h1>Student dashboard</h1>
+<p class="text-muted">Find examinations, manage bookings and view published results.</p>{% if not booking_open %}<div
+    class="alert alert-info">Student booking is currently closed.</div>{% endif %}<div
+    class="d-flex justify-content-between align-items-center mb-2">
+    <h3>Available examinations</h3><a class="btn btn-outline-primary"
+        href="{{ url_for('student.examinations') }}">Search examinations</a>
+</div>
+<div class="row g-3 mb-4">{% for e in available %}<div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body"><span class="badge text-bg-primary">{{ e.course_code }}</span>
+                <h5 class="mt-2">{{ e.name }}</h5>
+                <p class="text-muted">{{ e.course_name }} · {{ e.exam_type }} · {{ e.duration }} min</p><a
+                    class="btn btn-sm btn-primary" href="{{ url_for('student.available_slots',eid=e.id) }}">View
+                    slots</a>
+            </div>
+        </div>
+    </div>{% else %}<div class="col-12">
+        <div class="text-muted">No examinations currently have bookable slots.</div>
+    </div>{% endfor %}</div>
+<h3>My booking history</h3>
+<div class="card mb-4">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Examination</th>
+                    <th>Date / Time</th>
+                    <th>Examiner</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>{% for b in bookings %}<tr>
+                    <td>{{ b.exam_name }}</td>
+                    <td>{{ b.exam_date }} {{ b.start_time }}–{{ b.end_time }}</td>
+                    <td>{{ b.examiner_name }}</td>
+                    <td>{{ b.status }}</td>
+                    <td>{% if b.status=='booked' %}<form method="post"
+                            action="{{ url_for('student.cancel',bid=b.id) }}"><button
+                                class="btn btn-sm btn-outline-danger">Cancel booking</button></form>{% endif %}</td>
+                </tr>{% else %}<tr>
+                    <td colspan="5">No bookings yet.</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>
+<h3>Published results</h3>
+<div class="card">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>Examination</th>
+                <th>Date</th>
+                <th>Marks</th>
+                <th>Feedback</th>
+            </tr>
+        </thead>
+        <tbody>{% for r in results %}<tr>
+                <td>{{ r.exam_name }}</td>
+                <td>{{ r.exam_date }}</td>
+                <td>{{ r.total_marks }}</td>
+                <td>{{ r.remarks or '—' }}</td>
+            </tr>{% else %}<tr>
+                <td colspan="4">No published results.</td>
+            </tr>{% endfor %}</tbody>
+    </table>
+</div>{% endblock %}

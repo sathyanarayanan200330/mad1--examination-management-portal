@@ -1,0 +1,60 @@
+:root {
+    --emp-ink: #17243a;
+    --emp-bg: #f5f7fb
+}
+
+body {
+    background: var(--emp-bg);
+    color: var(--emp-ink);
+    min-height: 100vh
+}
+
+.navbar {
+    box-shadow: 0 2px 10px #10294a18
+}
+
+.card,
+.stat-card {
+    border: 1px solid #e7ebf2;
+    border-radius: 14px;
+    box-shadow: 0 4px 16px #17243a08
+}
+
+.stat-card {
+    background: #fff;
+    padding: 1.1rem;
+    height: 100%
+}
+
+.table {
+    vertical-align: middle
+}
+
+.table thead th {
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .035em;
+    color: #68758a;
+    background: #f8f9fc
+}
+
+.auth-card {
+    max-width: 470px;
+    margin-top: 4vh;
+    border: 0;
+    border-radius: 16px
+}
+
+.btn {
+    border-radius: 8px
+}
+
+footer {
+    font-size: .85rem
+}
+
+h1 {
+    font-weight: 700;
+    letter-spacing: -.03em;
+    margin-bottom: 1rem
+}

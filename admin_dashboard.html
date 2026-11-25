@@ -1,0 +1,62 @@
+{% extends 'base.html' %}{% block title %}Admin Dashboard{% endblock %}{% block content %}<div
+    class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Admin dashboard</h1>
+        <p class="text-muted">Overview and examination system controls.</p>
+    </div><a class="btn btn-outline-primary" href="{{ url_for('admin.search') }}">Search records</a>
+</div>
+<div class="row g-3 mb-4">{% for label,value in stats.items() %}<div class="col-6 col-md-4 col-lg-2">
+        <div class="stat-card">
+            <div class="text-muted small">{{ label|title }}</div>
+            <div class="fs-2 fw-bold">{{ value }}</div>
+        </div>
+    </div>{% endfor %}</div>
+<div class="card mb-4">
+    <div class="card-header fw-semibold">Examination access controls</div>
+    <div class="card-body">
+        <form method="post" action="{{ url_for('admin.controls') }}" class="row g-3 align-items-center">
+            <div class="col-md-4"><label class="form-label">Examiner slot creation</label><select class="form-select"
+                    name="slot_creation_open">
+                    <option value="0" {% if not slot_open %}selected{% endif %}>Closed</option>
+                    <option value="1" {% if slot_open %}selected{% endif %}>Open</option>
+                </select></div>
+            <div class="col-md-4"><label class="form-label">Student slot booking</label><select class="form-select"
+                    name="booking_open">
+                    <option value="0" {% if not booking_open %}selected{% endif %}>Closed</option>
+                    <option value="1" {% if booking_open %}selected{% endif %}>Open</option>
+                </select></div>
+            <div class="col-md-4 align-self-end"><button class="btn btn-primary">Save controls</button></div>
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header fw-semibold">Examiner registration requests and accounts</div>
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Department</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>{% for u in examiners %}<tr>
+                    <td>{{ u.name }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.department or '—' }}</td>
+                    <td><span
+                            class="badge text-bg-{{ 'success' if u.status=='active' else 'warning' if u.status=='pending' else 'secondary' }}">{{
+                            u.status }}</span></td>
+                    <td>{% if u.status!='active' %}<form class="d-inline" method="post"
+                            action="{{ url_for('admin.examiner_status',uid=u.id,action='approve') }}"><button
+                                class="btn btn-sm btn-success">Approve</button></form>{% else %}<form class="d-inline"
+                            method="post" action="{{ url_for('admin.examiner_status',uid=u.id,action='deactivate') }}">
+                            <button class="btn btn-sm btn-outline-danger">Deactivate</button></form>{% endif %}</td>
+                </tr>{% else %}<tr>
+                    <td colspan="5" class="text-center text-muted">No examiner registrations.</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>{% endblock %}

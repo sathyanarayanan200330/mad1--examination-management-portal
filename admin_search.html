@@ -1,0 +1,45 @@
+{% extends 'base.html' %}{% block title %}Search{% endblock %}{% block content %}<h1>Search records</h1>
+<form class="input-group mb-4"><input class="form-control" name="q" value="{{ q }}"
+        placeholder="Name, email or ID"><button class="btn btn-primary">Search</button></form>
+<h3>Students and examiners</h3>
+<div class="card mb-4">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>{% for u in users %}<tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.role }}</td>
+                <td>{{ u.status }}</td>
+            </tr>{% else %}<tr>
+                <td colspan="5">No matching users.</td>
+            </tr>{% endfor %}</tbody>
+    </table>
+</div>
+<h3>Examinations</h3>
+<div class="card">
+    <table class="table mb-0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>{% for e in exams %}<tr>
+                <td>{{ e.id }}</td>
+                <td>{{ e.name }}</td>
+                <td>{{ e.status }}</td>
+            </tr>{% else %}<tr>
+                <td colspan="3">No matching examinations.</td>
+            </tr>{% endfor %}</tbody>
+    </table>
+</div>{% endblock %}

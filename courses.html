@@ -1,0 +1,43 @@
+{% extends 'base.html' %}{% block title %}Courses{% endblock %}{% block content %}<h1>Course management</h1>
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="post" class="row g-2">
+            <div class="col-md-2"><input class="form-control" name="code" placeholder="Course code" required></div>
+            <div class="col-md-3"><input class="form-control" name="name" placeholder="Course name" required></div>
+            <div class="col-md-4"><input class="form-control" name="description" placeholder="Description"></div>
+            <div class="col-md-2"><select class="form-select" name="status">
+                    <option>active</option>
+                    <option>inactive</option>
+                </select></div>
+            <div class="col-md-1"><button class="btn btn-primary w-100">Add</button></div>
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>{% for c in courses %}<tr>
+                    <td>{{ c.code }}</td>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.description }}</td>
+                    <td>{{ c.status }}</td>
+                    <td><a class="btn btn-sm btn-outline-primary"
+                            href="{{ url_for('admin.edit_course',cid=c.id) }}">Edit</a>
+                        <form class="d-inline" method="post" action="{{ url_for('admin.delete_course',cid=c.id) }}">
+                            <button class="btn btn-sm btn-outline-danger">Delete</button></form>
+                    </td>
+                </tr>{% else %}<tr>
+                    <td colspan="5">No courses created.</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>{% endblock %}

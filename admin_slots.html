@@ -1,0 +1,29 @@
+{% extends 'base.html' %}{% block title %}All Slots{% endblock %}{% block content %}<h1>All examination slots</h1>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover mb-0">
+            <thead>
+                <tr>
+                    <th>Examination</th>
+                    <th>Examiner</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Capacity</th>
+                    <th>Booked</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>{% for s in slots %}<tr>
+                    <td>{{ s.exam_name }}</td>
+                    <td>{{ s.examiner_name }}</td>
+                    <td>{{ s.exam_date }}</td>
+                    <td>{{ s.start_time }}–{{ s.end_time }}</td>
+                    <td>{{ s.capacity }}</td>
+                    <td>{{ s.booked }}</td>
+                    <td>{{ s.status }}</td>
+                </tr>{% else %}<tr>
+                    <td colspan="7">No slots have been created.</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}{% block title %}Edit Examination{% endblock %}{% block content %}<h1>Edit examination</h1>
+<form method="post" class="card card-body">
+    <div class="row g-3">
+        <div class="col-md-6"><label class="form-label">Course</label><select class="form-select" name="course_id">{%
+                for c in courses %}<option value="{{ c.id }}" {% if c.id==exam.course_id %}selected{% endif %}>{{ c.code
+                    }} — {{ c.name }}</option>{% endfor %}</select></div>
+        <div class="col-md-6"><label class="form-label">Name</label><input class="form-control" name="name"
+                value="{{ exam.name }}" required></div>
+        <div class="col-md-3"><label class="form-label">Type</label><select class="form-select" name="exam_type">{% for
+                t in ['Viva','Practical','Project Demo','Assessment'] %}<option {% if exam.exam_type==t %}selected{%
+                    endif %}>{{ t }}</option>{% endfor %}</select></div>
+        <div class="col-md-3"><label class="form-label">Duration (minutes)</label><input class="form-control"
+                type="number" name="duration" value="{{ exam.duration }}" required></div>
+        <div class="col-md-3"><label class="form-label">Maximum marks</label><input class="form-control" type="number"
+                step="0.5" name="max_marks" value="{{ exam.max_marks }}" required></div>
+        <div class="col-md-3"><label class="form-label">Status</label><select class="form-select" name="status">{% for t
+                in ['draft','slot creation','booking open','closed','completed'] %}<option value="{{ t }}" {% if
+                    exam.status==t %}selected{% endif %}>{{ t|title }}</option>{% endfor %}</select></div>{% for
+        field,label in [('slot_start','Slot creation starts'),('slot_end','Slot creation
+        ends'),('booking_start','Booking starts'),('booking_end','Booking ends')] %}<div class="col-md-3"><label
+                class="form-label">{{ label }}</label><input class="form-control" type="date" name="{{ field }}"
+                value="{{ exam[field] }}" required></div>{% endfor %}<div class="col-12"><label
+                class="form-label">Description</label><textarea class="form-control"
+                name="description">{{ exam.description }}</textarea></div>
+        <div class="col-12"><button class="btn btn-primary">Save examination</button></div>
+    </div>
+</form>{% endblock %}

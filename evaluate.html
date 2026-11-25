@@ -1,0 +1,23 @@
+{% extends 'base.html' %}{% block title %}Evaluate Student{% endblock %}{% block content %}<h1>Evaluate student</h1>
+<p class="text-muted">{{ booking.student_name }} · {{ booking.exam_name }}</p>
+<form method="post">
+    <div class="card mb-3">
+        <div class="card-header">Examination rubric</div>
+        <div class="card-body">{% for r in rubrics %}{% set item=items.get(r.id) %}<div
+                class="row g-2 border-bottom py-3">
+                <div class="col-md-5"><strong>{{ r.criterion }}</strong>
+                    <div class="small text-muted">{{ r.description }} · Maximum {{ r.max_marks }}</div>
+                </div>
+                <div class="col-md-2"><label class="form-label">Marks</label><input class="form-control" type="number"
+                        min="0" max="{{ r.max_marks }}" step="0.5" name="marks_{{ r.id }}"
+                        value="{{ item.marks if item else '' }}" required></div>
+                <div class="col-md-5"><label class="form-label">Criterion remarks</label><input class="form-control"
+                        name="remarks_{{ r.id }}" value="{{ item.remarks if item else '' }}"></div>
+            </div>{% endfor %}<label class="form-label mt-3">Overall feedback</label><textarea class="form-control"
+                name="remarks" rows="3">{{ existing.remarks if existing else '' }}</textarea></div>
+    </div>
+    <div class="form-check mb-3"><input class="form-check-input" type="checkbox" name="publish" value="1"
+            id="publish"><label class="form-check-label" for="publish">Publish result so the student can view it</label>
+    </div><button class="btn btn-primary">Save evaluation</button> <a class="btn btn-outline-secondary"
+        href="{{ url_for('examiner.students') }}">Cancel</a>
+</form>{% endblock %}

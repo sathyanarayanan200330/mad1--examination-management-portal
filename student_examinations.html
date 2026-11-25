@@ -1,0 +1,14 @@
+{% extends 'base.html' %}{% block title %}Find Examinations{% endblock %}{% block content %}<h1>Find examinations</h1>
+<form class="input-group mb-4"><input class="form-control" name="q" value="{{ q }}"
+        placeholder="Search by examination, course or type"><button class="btn btn-primary">Search</button></form>
+<div class="row g-3">{% for e in exams %}<div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-body"><span class="badge text-bg-secondary">{{ e.course_code }}</span>
+                <h5 class="mt-2">{{ e.name }}</h5>
+                <p>{{ e.course_name }} · {{ e.exam_type }} · {{ e.duration }} minutes</p>
+                <p class="small text-muted">Booking period: {{ e.booking_start }} to {{ e.booking_end }}</p><a
+                    class="btn btn-primary btn-sm" href="{{ url_for('student.available_slots',eid=e.id) }}">View
+                    slots</a>
+            </div>
+        </div>
+    </div>{% else %}<p class="text-muted">No matching examinations.</p>{% endfor %}</div>{% endblock %}

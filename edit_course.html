@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block title %}Edit Course{% endblock %}{% block content %}<h1>Edit course</h1>
+<form method="post" class="card card-body"><label class="form-label">Code</label><input class="form-control mb-3"
+        name="code" value="{{ course.code }}" required><label class="form-label">Name</label><input
+        class="form-control mb-3" name="name" value="{{ course.name }}" required><label
+        class="form-label">Description</label><textarea class="form-control mb-3"
+        name="description">{{ course.description }}</textarea><label class="form-label">Status</label><select
+        class="form-select mb-3" name="status">
+        <option {% if course.status=='active' %}selected{% endif %}>active</option>
+        <option {% if course.status=='inactive' %}selected{% endif %}>inactive</option>
+    </select><button class="btn btn-primary">Save changes</button></form>{% endblock %}

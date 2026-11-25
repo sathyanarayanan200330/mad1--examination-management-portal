@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% block title %}Booked Students{% endblock %}{% block content %}<h1>Students booked into my
+    slots</h1>
+<div class="card">
+    <div class="table-responsive">
+        <table class="table mb-0">
+            <thead>
+                <tr>
+                    <th>Student</th>
+                    <th>Examination</th>
+                    <th>Schedule</th>
+                    <th>Booking</th>
+                    <th>Evaluation</th>
+                </tr>
+            </thead>
+            <tbody>{% for b in bookings %}<tr>
+                    <td>{{ b.student_name }}<br><small>{{ b.student_email }}</small></td>
+                    <td>{{ b.exam_name }}</td>
+                    <td>{{ b.exam_date }} {{ b.start_time }}–{{ b.end_time }}</td>
+                    <td>{{ b.booking_status }}</td>
+                    <td>{% if b.booking_status=='booked' %}<a class="btn btn-sm btn-primary"
+                            href="{{ url_for('examiner.evaluate',bid=b.booking_id) }}">{{ 'Edit evaluation' if
+                            b.evaluation_id else 'Evaluate' }}</a>{% else %}—{% endif %}</td>
+                </tr>{% else %}<tr>
+                    <td colspan="5">No students booked into your slots.</td>
+                </tr>{% endfor %}</tbody>
+        </table>
+    </div>
+</div>{% endblock %}
